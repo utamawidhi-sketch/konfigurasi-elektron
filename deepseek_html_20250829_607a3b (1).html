@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Konfigurasi Elektron</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+        
+        .input-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        input {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        #check-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        #check-btn:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        #help-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        #help-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        #random-btn {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        #random-btn:hover {
+            background-color: #8e44ad;
+            transform: translateY(-2px);
+        }
+        
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .result {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .correct {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .element {
+            padding: 8px;
+            text-align: center;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .element:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .visualization {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .orbital {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .orbital-label {
+            width: 50px;
+            font-weight: bold;
+        }
+        
+        .electrons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .electron {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .filled {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Konfigurasi Elektron</h1>
+            <p class="subtitle">Media Pembelajaran Interaktif</p>
+        </header>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="element-input">Simbol Unsur (contoh: C, O, Na):</label>
+                <input type="text" id="element-input" placeholder="Masukkan simbol unsur">
+            </div>
+            
+            <div class="input-group">
+                <label for="config-input">Konfigurasi Elektron:</label>
+                <input type="text" id="config-input" placeholder="Contoh: 1s² 2s² 2p⁴">
+            </div>
+        </div>
+        
+        <div class="options">
+            <label class="option-label">
+                <input type="checkbox" id="random-mode">
+                Mode Acak
+            </label>
+            
+            <label class="option-label">
+                <input type="checkbox" id="visual-mode" checked>
+                Tampilkan Visualisasi
+            </label>
+        </div>
+        
+        <div class="button-group">
+            <button id="check-btn">Cek Jawaban</button>
+            <button id="help-btn">Bantuan</button>
+            <button id="random-btn">Unsur Acak</button>
+        </div>
+        
+        <div class="result" id="result">
+            <p>Hasil akan ditampilkan di sini</p>
+        </div>
+        
+        <div>
+            <p style="font-weight: bold; margin-bottom: 10px;">Unsur yang Tersedia:</p>
+            <div class="elements-grid" id="elements-grid">
+                <!-- Elements will be generated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="visualization" id="visualization">
+            <h3>Visualisasi Konfigurasi Elektron</h3>
+            <div id="orbital-container">
+                <!-- Orbitals will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Media Pembelajaran Interaktif Konfigurasi Elektron | © 2023</p>
+    </footer>
+
+    <script>
+        // Data konfigurasi elektron
+        const electronConfigurations = {
+            "H": "1s¹", "He": "1s²", 
+            "Li": "1s² 2s¹", "Be": "1s² 2s²", "B": "1s² 2s² 2p¹", "C": "1s² 2s² 2p²", 
+            "N": "1s² 2s² 2p³", "O": "1s² 2s² 2p⁴", "F": "1s² 2s² 2p⁵", "Ne": "1s² 2s² 2p⁶",
+            "Na": "[Ne] 3s¹", "Mg": "[Ne] 3s²", "Al": "[Ne] 3s² 3p¹", "Si": "[Ne] 3s² 3p²", 
+            "P": "[Ne] 3s² 3p³", "S": "[Ne] 3s² 3p⁴", "Cl": "[Ne] 3s² 3p⁵", "Ar": "[Ne] 3s² 3p⁶",
+            "K": "[Ar] 4s¹", "Ca": "[Ar] 4s²", "Sc": "[Ar] 4s² 3d¹", "Ti": "[Ar] 4s² 3d²", 
+            "V": "[Ar] 4s² 3d³", "Cr": "[Ar] 4s¹ 3d⁵", "Mn": "[Ar] 4s² 3d⁵", "Fe": "[Ar] 4s² 3d⁶", 
+            "Co": "[Ar] 4s² 3d⁷", "Ni": "[Ar] 4s² 3d⁸", "Cu": "[Ar] 4s¹ 3d¹⁰", "Zn": "[Ar] 4s² 3d¹⁰",
+            "Ga": "[Ar] 4s² 3d¹⁰ 4p¹", "Ge": "[Ar] 4s² 3d¹⁰ 4p²", "As": "[Ar] 4s² 3d¹⁰ 4p³", 
+            "Se": "[Ar] 4s² 3d¹⁰ 4p⁴", "Br": "[Ar] 4s² 3d¹⁰ 4p⁵", "Kr": "[Ar] 4s² 3d¹⁰ 4p⁶"
+        };
+
+        // DOM elements
+        const elementInput = document.getElementById('element-input');
+        const configInput = document.getElementById('config-input');
+        const checkBtn = document.getElementById('check-btn');
+        const helpBtn = document.getElementById('help-btn');
+        const randomBtn = document.getElementById('random-btn');
+        const resultDiv = document.getElementById('result');
+        const elementsGrid = document.getElementById('elements-grid');
+        const visualizationDiv = document.getElementById('visualization');
+        const orbitalContainer = document.getElementById('orbital-container');
+        const randomModeCheckbox = document.getElementById('random-mode');
+        const visualModeCheckbox = document.getElementById('visual-mode');
+
+        // Generate element buttons
+        Object.keys(electronConfigurations).forEach(element => {
+            const elementButton = document.createElement('div');
+            elementButton.className = 'element';
+            elementButton.textContent = element;
+            elementButton.addEventListener('click', () => {
+                elementInput.value = element;
+                configInput.value = '';
+                configInput.focus();
+            });
+            elementsGrid.appendChild(elementButton);
+        });
+
+        // Check answer function
+        function checkAnswer() {
+            const element = elementInput.value.trim().charAt(0).toUpperCase() + 
+                            elementInput.value.trim().slice(1).toLowerCase();
+            const userConfig = configInput.value.trim();
+            
+            if (!element || !userConfig) {
+                showResult('Harap masukkan simbol unsur dan konfigurasi elektron.', 'incorrect');
+                return;
+            }
+            
+            if (!electronConfigurations[element]) {
+                showResult(`Unsur "${element}" tidak tersedia dalam database.`, 'incorrect');
+                return;
+            }
+            
+            const normalizedUserConfig = normalizeConfig(userConfig);
+            const normalizedCorrectConfig = normalizeConfig(electronConfigurations[element]);
+            
+            if (normalizedUserConfig === normalizedCorrectConfig) {
+                showResult(`Selamat! Jawaban Anda untuk ${element} benar.`, 'correct');
+                
+                if (visualModeCheckbox.checked) {
+                    showVisualization(element);
+                }
+                
+                if (randomModeCheckbox.checked) {
+                    setTimeout(pickRandomElement, 2000);
+                }
+            } else {
+                showResult(
+                    `Jawaban untuk ${element} kurang tepat.<br>
+                    Jawaban Anda: <strong>${userConfig}</strong><br>
+                    Jawaban benar: <strong>${electronConfigurations[element]}</strong>`, 
+                    'incorrect'
+                );
+            }
+        }
+
+        // Normalize configuration for comparison
+        function normalizeConfig(config) {
+            // Convert superscript numbers to normal numbers
+            const superscriptMap = {'¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', 
+                                   '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁰': '0'};
+            let normalized = config;
+            
+            for (const [superChar, normalChar] of Object.entries(superscriptMap)) {
+                normalized = normalized.replace(new RegExp(superChar, 'g'), normalChar);
+            }
+            
+            // Remove spaces and convert to lowercase
+            return normalized.replace(/\s+/g, '').toLowerCase();
+        }
+
+        // Show result message
+        function showResult(message, className) {
+            resultDiv.innerHTML = `<p class="${className}">${message}</p>`;
+        }
+
+        // Show visualization
+        function showVisualization(element) {
+            visualizationDiv.style.display = 'block';
+            orbitalContainer.innerHTML = '';
+            
+            const config = electronConfigurations[element];
+            const orbitals = config.split(' ');
+            
+            orbitals.forEach(orbital => {
+                if (orbital.startsWith('[')) return; // Skip noble gas notation
+                
+                const orbitalDiv = document.createElement('div');
+                orbitalDiv.className = 'orbital';
+                
+                const label = document.createElement('div');
+                label.className = 'orbital-label';
+                label.textContent = orbital.replace(/[0-9]/g, '');
+                
+                const electronsDiv = document.createElement('div');
+                electronsDiv.className = 'electrons';
+                
+                // Extract number of electrons
+                const electronCount = parseInt(orbital.replace(/\D/g, ''));
+                
+                // Create electron visualizations
+                for (let i = 0; i < electronCount; i++) {
+                    const electron = document.createElement('div');
+                    electron.className = 'electron filled';
+                    electron.textContent = i % 2 === 0 ? '↑' : '↓';
+                    electronsDiv.appendChild(electron);
+                }
+                
+                orbitalDiv.appendChild(label);
+                orbitalDiv.appendChild(electronsDiv);
+                orbitalContainer.appendChild(orbitalDiv);
+            });
+        }
+
+        // Pick random element
+        function pickRandomElement() {
+            const elements = Object.keys(electronConfigurations);
+            const randomElement = elements[Math.floor(Math.random() * elements.length)];
+            
+            elementInput.value = randomElement;
+            configInput.value = '';
+            configInput.focus();
+            
+            showResult(`Coba konfigurasi elektron untuk: ${randomElement}`, 'correct');
+        }
+
+        // Show help
+        function showHelp() {
+            alert("CARA MENGGUNAKAN:\n\n1. Masukkan simbol unsur (contoh: C, O, Na)\n2. Tulis konfigurasi elektronnya\n3. Klik 'Cek Jawaban'\n\nFORMAT KONFIGURASI:\n- Gunakan spasi antara orbital (contoh: 1s² 2s² 2p⁴)\n- Untuk unsur dengan konfigurasi gas mulia, gunakan notasi [Gas] (contoh: [Ne] 3s¹ untuk Natrium)\n\nTIP:\n- Aktifkan 'Mode Acak' untuk latihan dengan unsur yang dipilih secara acak\n- Aktifkan 'Tampilkan Visualisasi' untuk melihat diagram orbital setelah jawaban benar");
+        }
+
+        // Event listeners
+        checkBtn.addEventListener('click', checkAnswer);
+        helpBtn.addEventListener('click', showHelp);
+        randomBtn.addEventListener('click', pickRandomElement);
+        
+        // Allow pressing Enter to check answer
+        configInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        // Initialize with a random element
+        pickRandomElement();
+    </script>
+</body>
+</html>
